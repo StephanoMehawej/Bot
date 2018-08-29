@@ -143,6 +143,51 @@ public class Environment extends Module {
 		return (EnvVar)(String)value;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public static <EnvVar> EnvVar getVar2(String key, EnvVar defaultValue){
+		if(envVars == null){
+			
+			if(Framework.isDebugging())
+				Logger.log("A call to get a variable environment has been used but the Environment is not yet set! Make sure you have built the Framework or call Environment.build() manually! Using the defaultObject provided in the meantime.",
+						Logger.LogType.WARNING);
+			
+			return defaultValue;
+			
+		}
+		
+		String value = envVars.get(key.toLowerCase());
+		
+		if(value == null || value.equals("")){
+			return defaultValue;
+		}
+		
+		if(value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")){
+			return (EnvVar)Boolean.valueOf(value);
+		}
+		else if(value.matches("^[0-9]+$")){
+			
+			try{
+				Integer number = Integer.valueOf(value);
+				
+				return (EnvVar)number;
+			}
+			catch(NumberFormatException e){}
+			
+		}
+		else if(value.matches("^[0-9]+(\\.[0-9]+)?$")){
+			
+			try{
+				Double number = Double.valueOf(value);
+				
+				return (EnvVar)number;
+			}
+			catch(NumberFormatException e){}
+			
+		}
+		
+		return (EnvVar)(String)value;
+	}
+	
 	public static boolean hasVar(String key){
 		return envVars.containsKey(key.toLowerCase());
 	}
