@@ -106,6 +106,41 @@ public class CommandClear extends BotCommand {
 		
 	}
 	
+	protected void doClearLogic2(final String confMessage,
+			final String notifyMessage,
+			final Predicate<Message> messageCondition){
+		
+		new CommandConfirmed(this){
+			
+			@Override
+			public String getConfMessage(){
+				return confMessage;
+			}
+			
+			@Override
+			public void confirmed(){
+				
+				try{
+					
+					if(messageCondition == null)
+						deleteAllMessages();
+					else
+						deleteMessagesIf(messageCondition);
+					
+					if(notifyMessage != null && isAlive() && hasParameter("n"))
+						sendInfoMessage(notifyMessage);
+					
+				}
+				catch(PermissionException e){
+					new BotError(CommandClear.this, lang("NoPermission"));
+				}
+				
+			}
+			
+		};
+		
+	}
+	
 	protected void deleteAllMessages() throws PermissionException{
 		this.deleteMessagesIf(null);
 	}
