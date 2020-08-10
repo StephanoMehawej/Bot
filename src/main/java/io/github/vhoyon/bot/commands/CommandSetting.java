@@ -353,7 +353,7 @@ public class CommandSetting extends BotCommand {
 			new Option(lang("OptionNickname", code(getSetting("nickname")
 					.getDefaultValue())), "nickname"),
 			new Option(lang("OptionConfirmStop", code("true"), code("false"),
-					code(getSetting("nickname").getDefaultValue())),
+					code(getSetting("confirm_stop").getDefaultValue())),
 					"confirm_stop"),
 			new Option(lang("OptionVolume", code(getSetting("volume")
 					.getDefaultValue())), "volume"),
